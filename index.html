@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Java Full Stack Development — Syllabus Tracker</title>
+<style>
+  :root {
+    --bg: #f4f6fb;
+    --surface: #ffffff;
+    --surface-2: #f8fafc;
+    --border: #e3e8f0;
+    --text: #16203a;
+    --muted: #6b778c;
+    --accent: #3b62f6;
+    --accent-soft: #eaefff;
+    --success: #16a34a;
+    --success-soft: #e8f7ee;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(18, 32, 68, .05), 0 8px 24px rgba(18, 32, 68, .05);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Header ---------- */
+  header.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(255, 255, 255, .9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .topbar-inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-right: auto;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #3b62f6, #7a3bf6);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: .5px;
+    flex: none;
+  }
+
+  .brand h1 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 650;
+    line-height: 1.25;
+  }
+
+  .brand p {
+    margin: 2px 0 0;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  .global-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 280px;
+  }
+
+  .bar {
+    flex: 1;
+    height: 8px;
+    min-width: 140px;
+    background: #e8ecf5;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .bar > span {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #3b62f6, #6f8cff);
+    transition: width .3s ease;
+  }
+
+  .bar.done > span { background: linear-gradient(90deg, #16a34a, #4ade80); }
+
+  .progress-text {
+    font-size: 13px;
+    color: var(--muted);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .progress-text b { color: var(--text); font-size: 15px; }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    padding: 8px 14px;
+    transition: background .15s ease, border-color .15s ease, color .15s ease;
+  }
+
+  button:hover { background: var(--surface-2); border-color: #cfd8e6; }
+
+  button.ghost-danger:hover { border-color: #f2c0c0; background: #fdf2f2; color: #b91c1c; }
+
+  button.subtle {
+    border: none;
+    background: transparent;
+    color: var(--accent);
+    font-size: 13px;
+    padding: 4px 8px;
+  }
+
+  button.subtle:hover { background: var(--accent-soft); }
+
+  /* ---------- Layout ---------- */
+  .layout {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  /* ---------- Main ---------- */
+  main { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+
+  /* Home View Cards */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    padding: 8px 0;
+  }
+
+  .module-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    cursor: pointer;
+    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+    --card-color: var(--accent);
+    --card-color-soft: var(--accent-soft);
+  }
+
+  .module-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--card-color);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .08);
+  }
+
+  .module-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: var(--card-color);
+    opacity: 0.8;
+  }
+
+  .module-card .card-num {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--card-color);
+    background: var(--card-color-soft);
+    padding: 4px 12px;
+    border-radius: 99px;
+    align-self: flex-start;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .module-card h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .module-card .card-duration {
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .module-card .card-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .card-progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .module-card .card-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #eef2f7;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .module-card .card-progress-bar span {
+    display: block;
+    height: 100%;
+    background: var(--card-color);
+    transition: width .5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .module-card.is-complete {
+    background: #f8fff9;
+    border-color: var(--success);
+  }
+
+  .module-card.is-complete::before {
+    background: var(--success);
+  }
+
+  /* Detail View Updates */
+  .num-badge {
+    background: var(--mod-color-soft, var(--accent-soft));
+    color: var(--mod-color, var(--accent));
+  }
+  
+  .module-progress .bar span {
+    background: var(--mod-color, var(--accent));
+  }
+
+  .back-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .back-btn:hover {
+    background: var(--surface-2);
+    color: var(--accent);
+    transform: translateX(-4px);
+  }
+
+  /* ---------- Custom Modal ---------- */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: none;
+    place-items: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.active {
+    display: grid;
+  }
+
+  .modal-overlay .modal-card {
+    background: var(--surface);
+    width: 100%;
+    max-width: 400px;
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.9) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-icon {
+    width: 56px;
+    height: 56px;
+    background: #fef2f2;
+    color: #ef4444;
+    font-size: 24px;
+    font-weight: 800;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 20px;
+    border: 4px solid #fff;
+    box-shadow: 0 0 0 1px #fee2e2;
+  }
+
+  .modal-overlay h3 {
+    margin: 0 0 12px;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .modal-overlay p {
+    margin: 0 0 24px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .modal-actions button {
+    padding: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-secondary {
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  .btn-secondary:hover {
+    background: #e2e8f0;
+  }
+
+  .btn-primary {
+    background: #ef4444;
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  }
+
+  input[type="text"]:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  /* Detail View */
+  .view-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    transition: all .2s ease;
+    text-decoration: none;
+  }
+
+  .back-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: translateX(-4px);
+  }
+
+  .module {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    scroll-margin-top: 92px;
+    overflow: hidden;
+  }
+
+  .module-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: linear-gradient(180deg, #fbfcff, #ffffff);
+  }
+
+  .num-badge {
+    width: 34px;
+    height: 34px;
+    flex: none;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    font-weight: 650;
+    font-size: 14px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .module.is-complete .num-badge { color: var(--success); background: var(--success-soft); }
+
+  .module-head .titles { flex: 1; min-width: 0; }
+
+  .module-head h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 650;
+  }
+
+  .chip {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 11.5px;
+    color: var(--muted);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    padding: 1px 9px;
+  }
+
+  .module-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 190px;
+  }
+
+  .module-progress .bar { min-width: 90px; }
+
+  .count {
+    font-size: 12.5px;
+    color: var(--muted);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .caret {
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    padding: 6px 8px;
+    font-size: 13px;
+    line-height: 1;
+  }
+
+  .caret:hover { background: var(--surface-2); }
+
+  .topics {
+    list-style: none;
+    margin: 0;
+    padding: 0 18px 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  .module.collapsed .syllabus-table,
+  .module.collapsed .module-tools { display: none; }
+
+  .syllabus-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid var(--border);
+  }
+
+  .syllabus-table thead tr {
+    background: #2d5a82;
+    color: #ffffff;
+  }
+
+  .syllabus-table th {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid #d1dce5;
+  }
+
+  .syllabus-table th:first-child { text-align: left; width: 60px; }
+
+  .syllabus-table td {
+    padding: 14px 16px;
+    font-size: 15px;
+    border: 1px solid #d1dce5;
+    vertical-align: top;
+    cursor: pointer;
+    background: #ffffff;
+  }
+
+  .syllabus-table td:first-child {
+    text-align: left;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .syllabus-table td:nth-child(2) {
+    font-weight: 700;
+    width: 280px;
+  }
+
+  .syllabus-table tbody tr:nth-child(even) td {
+    background: #f1f6fa;
+  }
+
+  .syllabus-table tbody tr:hover td {
+    background: #e7eff6;
+  }
+
+  .syllabus-table tr.is-done td {
+    background: #eafaf1 !important;
+    color: #4a5568;
+  }
+
+  .status-cell {
+    width: 50px;
+    text-align: center;
+  }
+
+  .syllabus-table input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 1.8px solid #c3cddd;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    position: relative;
+    transition: background .15s ease, border-color .15s ease;
+  }
+
+  .syllabus-table input[type="checkbox"]:checked {
+    background: var(--success);
+    border-color: var(--success);
+  }
+
+  .syllabus-table input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .module-tools {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 18px 14px;
+    border-top: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+
+  .module-tools .spacer { flex: 1; }
+
+  .module-tools .hint { font-size: 12px; color: var(--muted); }
+
+  /* ---------- Info sections ---------- */
+  .info {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    scroll-margin-top: 92px;
+  }
+
+  .info h3 { margin: 0 0 4px; font-size: 16px; font-weight: 650; }
+
+  .info .sub { margin: 0 0 14px; font-size: 13px; color: var(--muted); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid #eef1f7;
+    vertical-align: top;
+  }
+
+  th {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--muted);
+    background: var(--surface-2);
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  td:first-child { font-weight: 550; white-space: nowrap; }
+
+  .advice {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 13.5px;
+    color: #3d4759;
+  }
+
+  .advice li { margin-bottom: 6px; }
+
+  footer.page-foot {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 8px 24px 40px;
+    color: var(--muted);
+    font-size: 12.5px;
+    text-align: center;
+  }
+
+  .empty-note { padding: 40px 20px; text-align: center; color: var(--muted); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1080px) {
+    .layout { grid-template-columns: 1fr; }
+    aside.sidebar {
+      position: static;
+      max-height: none;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 12px;
+    }
+    aside.sidebar h2 { display: none; }
+    .nav-item { flex: none; border-left: none; border-bottom: 3px solid transparent; }
+    .nav-item.active { border-left: none; border-bottom-color: var(--accent); }
+    .nav-item .nav-meta { display: none; }
+    .nav-item .nav-title { white-space: nowrap; }
+  }
+
+  @media (max-width: 720px) {
+    .layout { padding: 16px; gap: 16px; }
+    .topbar-inner { padding: 12px 16px; }
+    .module-head { flex-wrap: wrap; }
+    .module-progress { min-width: 100%; padding-left: 48px; }
+    td:first-child { white-space: normal; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="logo">{ }</div>
+      <div>
+        <h1>Java Full Stack Development</h1>
+        <p>Detailed syllabus tracker &middot; Beginner to Advanced</p>
+      </div>
+    </div>
+    <div class="global-progress">
+      <div class="bar" id="globalBar"><span></span></div>
+      <div class="progress-text" id="globalText"><b>0%</b> &middot; 0 / 0 topics</div>
+    </div>
+  </div>
+</header>
+
+<!-- Custom Modal -->
+<div id="modalOverlay" class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-icon">!</div>
+    <h3>Unmark Completion?</h3>
+    <p>Are you sure you want to mark this topic as not completed? Your progress for this module will be updated.</p>
+    <div class="modal-actions">
+      <button id="modalCancel" class="btn-secondary">Cancel</button>
+      <button id="modalConfirm" class="btn-primary">Yes, Unmark</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Topic Modal -->
+<div id="addTopicModal" class="modal-overlay">
+  <div class="modal-card">
+    <h3>Add New Topic</h3>
+    <p>Add a custom topic to this module.</p>
+    <div style="text-align: left; margin-bottom: 20px;">
+      <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Topic Name</label>
+      <input type="text" id="newTopicName" placeholder="e.g. Advanced Design Patterns" 
+             style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px;">
+      
+      <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Description / What to learn</label>
+      <textarea id="newTopicDesc" placeholder="e.g. Factory, Singleton, and Observer patterns in depth..." 
+                style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; height: 80px; resize: none;"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button id="addTopicCancel" class="btn-secondary">Cancel</button>
+      <button id="addTopicConfirm" class="btn-primary" style="background: var(--accent);">Add Topic</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete PIN Modal -->
+<div id="deletePinModal" class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-icon" style="background: #fffbeb; color: #f59e0b; box-shadow: 0 0 0 1px #fef3c7;">!</div>
+    <h3>Enter PIN to Delete</h3>
+    <p>Please enter the security PIN to delete this topic.</p>
+    <div style="margin-bottom: 20px;">
+      <input type="password" id="deletePinInput" placeholder="Enter PIN" 
+             style="width: 100%; text-align: center; font-size: 24px; letter-spacing: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 12px;">
+    </div>
+    <div class="modal-actions">
+      <button id="deletePinCancel" class="btn-secondary">Cancel</button>
+      <button id="deletePinConfirm" class="btn-primary">Confirm Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <main id="main"></main>
+</div>
+
+<footer class="page-foot">
+  Progress is saved automatically in this browser using local storage.
+</footer>
+
+<script>
+/* ------------------------------------------------------------------ */
+/* Syllabus data                                                       */
+/* ------------------------------------------------------------------ */
+const DEFAULT_SYLLABUS = [
+  {
+    no: 1, title: "Core Java Programming", duration: "4\u20135 weeks", color: "#3b82f6",
+    topics: [
+      ["Introduction to Java", "Java history and features; platform independence; JDK, JRE and JVM; installing Java; compiling and running a program; Java program structure."],
+      ["Java basics", "Tokens, keywords, identifiers, variables, constants, primitive and non-primitive data types, type casting, operators and expressions."],
+      ["Input and output", "Scanner class, command-line arguments, printing output, formatted output and basic debugging."],
+      ["Control statements", "if, if-else, nested if, switch, for loop, while loop, do-while loop, break and continue."],
+      ["Arrays", "One-dimensional and two-dimensional arrays; declaration, initialization, traversal, searching, sorting and multidimensional arrays."],
+      ["Strings", "String class, immutability, common string methods, StringBuffer, StringBuilder and string comparison."],
+      ["Classes and objects", "Class definition, object creation, fields, methods, constructors, this keyword, static members and object initialization."],
+      ["Object-oriented programming", "Encapsulation, inheritance, polymorphism and abstraction; real-world use of OOP principles."],
+      ["Inheritance", "Single, multilevel and hierarchical inheritance; super keyword; constructor chaining; method overriding."],
+      ["Polymorphism", "Compile-time polymorphism through method overloading and runtime polymorphism through method overriding; dynamic method dispatch."],
+      ["Abstraction and interfaces", "Abstract classes, abstract methods, interfaces, multiple inheritance through interfaces and default/static interface methods."],
+      ["Packages and access modifiers", "Creating packages, importing packages, built-in packages, public, private, protected and default access."],
+      ["Exception handling", "Exception hierarchy, checked and unchecked exceptions, try, catch, finally, throw, throws and custom exceptions."],
+      ["Collections Framework", "Collection hierarchy; ArrayList, LinkedList, HashSet, TreeSet, HashMap, TreeMap, Queue, Iterator and Comparable/Comparator."],
+      ["Generics", "Generic classes, interfaces and methods; type parameters; bounded types and benefits of type safety."],
+      ["Multithreading", "Thread class, Runnable interface, thread lifecycle, priorities, sleep, join, synchronization and inter-thread communication basics."],
+      ["Java 8 and modern Java", "Lambda expressions, functional interfaces, method references, Stream API, Optional and date/time API."],
+      ["File handling and serialization", "File class, byte and character streams, buffered streams, reading/writing files and object serialization basics."],
+      ["Practical programming", "Number programs, patterns, arrays, strings, OOP-based programs, exception handling and collection-based programs."]
+    ]
+  },
+  {
+    no: 2, title: "Advanced Java", duration: "3\u20134 weeks", color: "#8b5cf6",
+    topics: [
+      ["JDBC introduction", "Purpose of JDBC, JDBC architecture, JDBC drivers, database connectivity steps and JDBC workflow."],
+      ["JDBC components", "DriverManager, Connection, Statement, PreparedStatement, CallableStatement and ResultSet."],
+      ["JDBC CRUD operations", "Insert, select, update and delete records; parameterized queries; handling SQL exceptions."],
+      ["Transactions in JDBC", "Auto-commit, commit, rollback, transaction boundaries and batch processing."],
+      ["Servlet introduction", "Web application basics, servlet architecture, servlet lifecycle, deployment descriptor and annotations."],
+      ["HTTP request and response", "GET and POST methods, HttpServletRequest, HttpServletResponse, request parameters and response handling."],
+      ["Servlet configuration", "URL mapping, init parameters, context parameters and servlet configuration."],
+      ["Session management", "Cookies, HttpSession, URL rewriting, hidden form fields, session timeout and logout."],
+      ["JSP", "JSP lifecycle, directives, declarations, scriptlets, expressions, implicit objects and Expression Language basics."],
+      ["JSTL", "Core tags, conditional tags, iteration tags, formatting tags and reducing Java code in JSP pages."],
+      ["MVC architecture", "Model, View and Controller roles; request flow; separating presentation, business logic and data access."],
+      ["Filters and listeners", "Servlet filters, filter chain, authentication filters, servlet listeners and application/session events."],
+      ["Connection pooling", "Why connection pooling is needed; data source concept; reusing database connections."]
+    ]
+  },
+  {
+    no: 3, title: "Database Management System and MySQL", duration: "2\u20133 weeks", color: "#f59e0b",
+    topics: [
+      ["DBMS fundamentals", "Data, database, DBMS, RDBMS, database users, schema, instance and advantages of database systems."],
+      ["Database design", "Entities, attributes, relationships, ER diagrams, cardinality, keys and mapping ER models to tables."],
+      ["SQL data types and DDL", "CREATE, ALTER, DROP and TRUNCATE; numeric, character, date and time data types."],
+      ["DML and DQL", "INSERT, UPDATE, DELETE and SELECT; filtering records with WHERE and sorting with ORDER BY."],
+      ["SQL constraints", "PRIMARY KEY, FOREIGN KEY, UNIQUE, NOT NULL, CHECK and DEFAULT constraints."],
+      ["SQL operators and functions", "Arithmetic, comparison and logical operators; string, numeric, date and conversion functions."],
+      ["Aggregate queries", "COUNT, SUM, AVG, MIN and MAX; GROUP BY, HAVING and aggregate query practice."],
+      ["Joins", "INNER JOIN, LEFT JOIN, RIGHT JOIN, CROSS JOIN and self join; joining multiple tables."],
+      ["Subqueries", "Single-row and multiple-row subqueries, correlated subqueries, IN, EXISTS and ANY/ALL."],
+      ["Database objects", "Views, indexes, stored procedures, functions and triggers; use cases and basic implementation."],
+      ["Normalization", "Functional dependencies; 1NF, 2NF, 3NF and BCNF; reducing redundancy and update anomalies."],
+      ["Transactions and ACID", "Atomicity, consistency, isolation and durability; COMMIT, ROLLBACK and transaction basics."],
+      ["Performance and security", "Indexes, query execution basics, users, privileges, GRANT, REVOKE and least-privilege access."],
+      ["Optional MongoDB", "NoSQL concepts, documents, collections, CRUD operations and comparison with relational databases."]
+    ]
+  },
+  {
+    no: 4, title: "Frontend Development: HTML5, CSS3 and JavaScript", duration: "4\u20135 weeks", color: "#10b981",
+    topics: [
+      ["Web fundamentals", "Client-server architecture, browsers, web servers, URLs, HTTP/HTTPS, static and dynamic websites."],
+      ["HTML document structure", "DOCTYPE, html, head, body, headings, paragraphs, links, images and page metadata."],
+      ["HTML elements", "Lists, tables, forms, input types, labels, buttons, select boxes, text areas and form validation attributes."],
+      ["Semantic HTML", "header, nav, main, section, article, aside, footer; accessibility and meaningful page structure."],
+      ["Media and embeds", "Audio, video, iframe, canvas basics and embedding external content responsibly."],
+      ["CSS fundamentals", "Syntax, selectors, cascade, specificity, inheritance, colors, backgrounds, fonts and units."],
+      ["CSS box model", "Content, padding, border, margin, width, height, box-sizing and overflow."],
+      ["CSS layout", "Display, position, z-index, float basics, Flexbox and CSS Grid."],
+      ["Responsive design", "Viewport, media queries, mobile-first design, fluid layouts and responsive images."],
+      ["CSS effects", "Transitions, transforms, keyframe animations, pseudo-classes and pseudo-elements."],
+      ["Bootstrap basics", "Grid system, containers, breakpoints, typography, buttons, forms, cards, navbar and utilities."],
+      ["JavaScript fundamentals", "Variables, let/const, data types, operators, type conversion and expressions."],
+      ["JavaScript control flow", "Conditions, switch, loops, break, continue and error handling."],
+      ["Functions and scope", "Function declarations, expressions, arrow functions, parameters, return values, scope and closures basics."],
+      ["Arrays and objects", "Array methods, object properties, destructuring, spread/rest operators and JSON."],
+      ["DOM manipulation", "Selecting elements, changing content/styles, creating/removing elements and traversing the DOM."],
+      ["Events and forms", "Event listeners, event object, bubbling, form submission and client-side validation."],
+      ["Modern JavaScript", "ES6 modules, template literals, classes, promises, async/await and try/catch."],
+      ["Browser APIs and HTTP", "Fetch API, requests, responses, JSON parsing, local storage and session storage."],
+      ["Frontend practicals", "Responsive portfolio, registration form, calculator, to-do list and API-powered mini application."]
+    ]
+  },
+  {
+    no: 5, title: "React.js", duration: "3\u20134 weeks", color: "#06b6d4",
+    topics: [
+      ["React introduction", "What React is, component-based UI, SPA concept, setup with Vite and project structure."],
+      ["JSX", "JSX syntax, expressions, attributes, fragments and rendering elements."],
+      ["Components", "Functional components, reusable components, composition and component organization."],
+      ["Props and state", "Passing props, state with useState, updating state and one-way data flow."],
+      ["Events and conditional UI", "Event handling, conditional rendering, lists, keys and rendering dynamic data."],
+      ["Forms", "Controlled components, form state, validation and handling submissions."],
+      ["React Hooks", "useState, useEffect, useContext, useRef and rules of hooks."],
+      ["Effects and API calls", "useEffect lifecycle patterns, fetching data, loading states, errors and cleanup."],
+      ["Routing", "React Router, routes, nested routes, route parameters, navigation and protected-route concepts."],
+      ["Shared state", "Context API, lifting state up and state-management fundamentals."],
+      ["API integration", "Fetch and Axios, sending JSON, handling status codes and connecting to Spring Boot APIs."],
+      ["Build and performance", "Production builds, environment variables, code organization and basic performance practices."],
+      ["React practicals", "To-do application, weather app, product listing, login UI and dashboard."]
+    ]
+  },
+  {
+    no: 6, title: "Spring Framework", duration: "3\u20134 weeks", color: "#ef4444",
+    topics: [
+      ["Spring introduction", "Spring ecosystem, modules, advantages and comparison with traditional Java application development."],
+      ["IoC and Dependency Injection", "Inversion of Control, constructor injection, setter injection and loose coupling."],
+      ["Spring Beans", "Bean definition, bean scopes, lifecycle, component scanning and annotations."],
+      ["Configuration", "Java-based configuration, annotation configuration, XML configuration overview and properties."],
+      ["Spring MVC", "DispatcherServlet, controllers, model, view resolver, request mapping and form handling."],
+      ["AOP basics", "Aspect-oriented programming, cross-cutting concerns, advice, pointcuts and aspects."],
+      ["Spring JDBC and ORM", "JdbcTemplate overview, ORM concepts and integration with persistence technologies."],
+      ["Spring Data JPA", "Repositories, entity mapping, derived query methods and pagination basics."]
+    ]
+  },
+  {
+    no: 7, title: "Spring Boot", duration: "4\u20135 weeks", color: "#ec4899",
+    topics: [
+      ["Spring Boot fundamentals", "Purpose, advantages, auto-configuration, starter dependencies and embedded servers."],
+      ["Project setup", "Spring Initializr, Maven, project structure, dependencies and running the application."],
+      ["Configuration", "application.properties, YAML, profiles, configuration properties and environment-specific settings."],
+      ["Layered architecture", "Controller, Service, Repository and Entity layers; separation of responsibilities."],
+      ["REST controllers", "Building REST endpoints with @RestController and request mapping annotations."],
+      ["HTTP methods and status codes", "GET, POST, PUT, PATCH and DELETE; appropriate HTTP status codes and response bodies."],
+      ["Request data", "Path variables, query parameters, request body, DTOs and response objects."],
+      ["JPA and Hibernate", "ORM, entity lifecycle, EntityManager concept, Hibernate and Spring Data JPA."],
+      ["Entity relationships", "One-to-one, one-to-many, many-to-one and many-to-many mappings; cascade and fetch types."],
+      ["CRUD application", "Create, read, update and delete operations with MySQL and JpaRepository."],
+      ["Validation", "Bean Validation, @Valid, common constraints and validation error responses."],
+      ["Exception handling", "Custom exceptions, @ControllerAdvice, @ExceptionHandler and consistent API error formats."],
+      ["Spring Security", "Authentication, authorization, password encoding, roles and endpoint protection."],
+      ["JWT authentication", "Token structure, issuing tokens, validating tokens, filters, expiration and refresh-token concepts."],
+      ["API documentation", "Swagger UI, OpenAPI specifications and documenting endpoints."],
+      ["Testing", "JUnit 5, Mockito, unit tests, controller tests and integration-testing basics."],
+      ["File handling", "File upload/download endpoints, multipart requests and basic file validation."],
+      ["Deployment preparation", "Maven packaging, executable JAR, configuration profiles and production logging basics."]
+    ]
+  },
+  {
+    no: 8, title: "REST APIs and Web Services", duration: "1\u20132 weeks", color: "#6366f1",
+    topics: [
+      ["API fundamentals", "API purpose, client-server communication, REST constraints and resource-oriented design."],
+      ["HTTP communication", "Methods, headers, request bodies, response bodies, status codes and content types."],
+      ["Data formats", "JSON structure, serialization, deserialization and XML overview."],
+      ["Endpoint design", "Resource naming, URI patterns, versioning, filtering, sorting and pagination."],
+      ["CRUD APIs", "Designing and implementing create, read, update and delete endpoints."],
+      ["API testing", "Postman collections, environments, variables, request headers and test scripts basics."],
+      ["Integration", "Connecting React frontend to Spring Boot backend; CORS and error handling."],
+      ["Security basics", "Authentication, authorization, HTTPS, input validation and avoiding sensitive data exposure."]
+    ]
+  },
+  {
+    no: 9, title: "Development Tools and Technologies", duration: "Throughout the course", color: "#64748b",
+    topics: [
+      ["JDK and IDE", "Install and configure a supported JDK; use IntelliJ IDEA, Eclipse or VS Code for Java development."],
+      ["Git", "Repository initialization, status, add, commit, log, branch, merge, pull and conflict resolution."],
+      ["GitHub", "Remote repositories, push, pull, clone, pull requests, README files and project collaboration."],
+      ["Maven", "pom.xml, dependencies, plugins, lifecycle phases, build and packaging."],
+      ["Apache Tomcat", "Servlet container concepts, deployment and server configuration for traditional web applications."],
+      ["Postman", "Create requests, organize collections, use environments and test REST endpoints."],
+      ["MySQL Workbench", "Database connections, schema design, SQL editor and ER diagram tools."],
+      ["Browser developer tools", "Inspect elements, console, network tab, storage and frontend debugging."],
+      ["npm", "Package installation, package.json, scripts and frontend dependency management."],
+      ["Docker basics", "Images, containers, Dockerfile, ports, volumes and containerizing an application."],
+      ["Linux basics", "Terminal commands, files/directories, permissions, processes and environment variables."],
+      ["CI/CD basics", "Build automation, test pipelines, deployment pipeline concepts and Jenkins overview."]
+    ]
+  },
+  {
+    no: 10, title: "Software Testing and Debugging", duration: "1\u20132 weeks", color: "#f97316",
+    topics: [
+      ["Testing fundamentals", "Why testing is needed; verification, validation, test levels and test principles."],
+      ["Manual testing", "Test scenarios, test cases, expected results, defect reporting and regression testing."],
+      ["Unit testing", "Testing individual methods/classes and writing JUnit test cases."],
+      ["Mockito", "Mock objects, stubbing, verification and isolating dependencies."],
+      ["Integration testing", "Testing interaction between controllers, services, repositories and databases."],
+      ["API testing", "Positive/negative cases, status codes, validation, authentication and boundary cases."],
+      ["Debugging", "Breakpoints, stepping through code, stack traces, logs and root-cause analysis."]
+    ]
+  },
+  {
+    no: 11, title: "Deployment and Cloud Basics", duration: "1\u20132 weeks", color: "#14b8a6",
+    topics: [
+      ["Build and package", "Compile, test and package Java applications with Maven; generate executable JAR files."],
+      ["Backend deployment", "Configure and deploy Spring Boot applications to a hosting platform or cloud server."],
+      ["Frontend deployment", "Build React for production and host static frontend files."],
+      ["Database deployment", "Configure hosted databases, credentials, network access and backups."],
+      ["Configuration management", "Environment variables, profiles, secrets management basics and production configuration."],
+      ["Docker deployment", "Build images, run containers, map ports and use environment variables."],
+      ["Cloud fundamentals", "Compute, storage, networking, regions, availability and introductory AWS or Azure services."],
+      ["CI/CD", "Automated build, tests, artifact creation and deployment workflow concepts."]
+    ]
+  },
+  {
+    no: 12, title: "Data Structures and Algorithms", duration: "Parallel practice: 2\u20133 months", color: "#84cc16",
+    topics: [
+      ["Complexity analysis", "Time complexity, space complexity, Big-O, Big-Theta and Big-Omega basics."],
+      ["Arrays and strings", "Traversal, insertion/deletion concepts, two pointers, prefix sums and common string problems."],
+      ["Searching and sorting", "Linear search, binary search, bubble, selection, insertion, merge and quick sort."],
+      ["Linked lists", "Singly, doubly and circular linked lists; insertion, deletion and traversal."],
+      ["Stacks and queues", "Array/linked-list implementation, applications, circular queue and deque."],
+      ["Hashing", "HashMap, HashSet, frequency counting and collision concepts."],
+      ["Trees", "Binary trees, binary search trees, traversals, height and basic operations."],
+      ["Recursion and backtracking", "Base cases, recursive calls, subsets, permutations and constraint-based problems."],
+      ["Greedy algorithms", "Activity selection, job sequencing and minimum spanning tree concepts."],
+      ["Dynamic programming", "Memoization, tabulation, knapsack, longest common subsequence and related problems."],
+      ["Interview practice", "Solve problems regularly, explain approach, analyze complexity and write clean Java solutions."]
+    ]
+  },
+  {
+    no: 13, title: "Major Full Stack Projects", duration: "Build throughout the course", color: "#f43f5e",
+    topics: [
+      ["Student Management System", "Features: student registration, login, student CRUD, attendance, marks/results and admin dashboard. Suggested stack: React, Spring Boot, MySQL."],
+      ["E-commerce Website", "Features: user accounts, product catalogue, search/filter, cart, orders, admin product management and payment-gateway integration in test mode. Suggested stack: React, Spring Boot, MySQL."],
+      ["Job Portal", "Features: job seeker and recruiter roles, job posting, resume upload, applications, search/filter and application tracking."],
+      ["Hospital Management System", "Features: patient registration, doctor management, appointments, medical records, billing and role-based access."],
+      ["Project quality checklist", "Use GitHub, a clear README, ER diagram, API documentation, validation, exception handling, testing and a deployed demo."]
+    ]
+  },
+  {
+    no: 14, title: "Placement and Interview Preparation", duration: "Ongoing; final month focus", color: "#7c3aed",
+    topics: [
+      ["Java interview topics", "OOP, strings, collections, exceptions, multithreading, Java 8 features and JVM fundamentals."],
+      ["SQL interview topics", "Joins, subqueries, constraints, normalization, indexes, transactions and query writing."],
+      ["Web interview topics", "HTML semantics, CSS layout, JavaScript fundamentals, DOM, promises, React components and hooks."],
+      ["Backend interview topics", "Spring IoC/DI, Spring Boot architecture, REST APIs, JPA, Hibernate, security and JWT."],
+      ["DSA and aptitude", "Arrays, strings, searching, sorting, basic trees, logical reasoning, quantitative aptitude and verbal ability."],
+      ["Resume and portfolio", "One-page resume, GitHub repositories, project descriptions, deployed links and technical skills."],
+      ["Communication practice", "Explain projects, describe design decisions, discuss challenges and practice technical mock interviews."]
+    ]
+  }
+];
+
+const ROADMAP = [
+  ["1", "Core Java", "Write Java programs confidently; understand OOP, collections and exceptions."],
+  ["2", "Advanced Java + SQL", "Build JDBC applications and work with relational databases."],
+  ["3", "HTML + CSS + JavaScript", "Create responsive and interactive web pages."],
+  ["4", "React.js", "Build component-based frontend applications and consume APIs."],
+  ["5", "Spring Framework + Spring Boot", "Develop REST APIs and connect backend services to MySQL."],
+  ["6", "Full stack integration", "Connect React, Spring Boot and MySQL; implement authentication."],
+  ["7", "Testing + Git + deployment", "Test APIs and application layers; deploy a working application."],
+  ["8", "Projects + placement", "Complete portfolio projects, revise DSA and prepare for interviews."]
+];
+
+const TECH_STACK = [
+  ["Frontend", "HTML5, CSS3, JavaScript (ES6+), React.js, Bootstrap"],
+  ["Backend", "Java, JDBC fundamentals, Spring Framework, Spring Boot, REST APIs"],
+  ["Database", "MySQL, SQL, Hibernate, Spring Data JPA"],
+  ["Tools", "IntelliJ IDEA or Eclipse, VS Code, Git, GitHub, Maven, Postman, MySQL Workbench"],
+  ["Testing", "JUnit 5, Mockito, Postman"],
+  ["Deployment", "Docker basics, cloud hosting (AWS/Azure fundamentals), CI/CD basics"]
+];
+
+const PROJECT_CHECKLIST = [
+  ["Student Management System", "Login, student CRUD, attendance, marks/results, admin dashboard."],
+  ["E-commerce Website", "Product catalogue, search, cart, orders, admin panel and test payment integration."],
+  ["Job Portal", "Job seeker/recruiter roles, job posting, resume upload, applications and tracking."],
+  ["Hospital Management System", "Patients, doctors, appointments, medical records and billing."]
+];
+
+const ADVICE = [
+  "Treat the durations as estimates, not fixed rules.",
+  "Write code while studying each topic.",
+  "Build small applications before starting a major project.",
+  "Keep projects on GitHub with a README, database design, API details, screenshots and a deployed demo where possible.",
+  "Practice DSA and interview questions throughout the course."
+];
+
+/* ------------------------------------------------------------------ */
+/* Storage                                                             */
+/* ------------------------------------------------------------------ */
+const STORAGE_KEY = "javaFullStackSyllabusProgress.v1";
+const SYLLABUS_KEY = "javaFullStackSyllabusData.v1";
+
+function loadSyllabus() {
+  try {
+    const raw = localStorage.getItem(SYLLABUS_KEY);
+    return raw ? JSON.parse(raw) : DEFAULT_SYLLABUS;
+  } catch (err) {
+    return DEFAULT_SYLLABUS;
+  }
+}
+
+function saveSyllabus() {
+  try {
+    localStorage.setItem(SYLLABUS_KEY, JSON.stringify(SYLLABUS));
+  } catch (err) {
+    /* storage unavailable */
+  }
+}
+
+let SYLLABUS = loadSyllabus();
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const data = raw ? JSON.parse(raw) : {};
+    return data && typeof data === "object" ? data : {};
+  } catch (err) {
+    return {};
+  }
+}
+
+function saveProgress() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(done));
+  } catch (err) {
+    /* storage unavailable (private mode / quota) — progress stays in memory */
+  }
+}
+
+let done = loadProgress();
+
+/* topic key: "m<module no>-t<topic index>" */
+const topicKey = (m, t) => "m" + m + "-t" + t;
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+/* ------------------------------------------------------------------ */
+/* Rendering                                                           */
+/* ------------------------------------------------------------------ */
+const mainEl = document.getElementById("main");
+const modalOverlay = document.getElementById("modalOverlay");
+const modalConfirmBtn = document.getElementById("modalConfirm");
+const modalCancelBtn = document.getElementById("modalCancel");
+
+let modalResolve = null;
+
+function showCustomConfirm() {
+  modalOverlay.classList.add("active");
+  return new Promise((resolve) => {
+    modalResolve = resolve;
+  });
+}
+
+function hideModal(value) {
+  modalOverlay.classList.remove("active");
+  if (modalResolve) modalResolve(value);
+  modalResolve = null;
+}
+
+modalConfirmBtn.addEventListener("click", () => hideModal(true));
+modalCancelBtn.addEventListener("click", () => hideModal(false));
+modalOverlay.addEventListener("click", (e) => {
+  if (e.target === modalOverlay) hideModal(false);
+});
+
+// Add Topic Modal Logic
+const addTopicModal = document.getElementById("addTopicModal");
+const addTopicConfirmBtn = document.getElementById("addTopicConfirm");
+const addTopicCancelBtn = document.getElementById("addTopicCancel");
+const newTopicNameInput = document.getElementById("newTopicName");
+const newTopicDescInput = document.getElementById("newTopicDesc");
+
+function showAddTopicModal() {
+  newTopicNameInput.value = "";
+  newTopicDescInput.value = "";
+  addTopicModal.classList.add("active");
+}
+
+function hideAddTopicModal() {
+  addTopicModal.classList.remove("active");
+}
+
+addTopicCancelBtn.addEventListener("click", hideAddTopicModal);
+addTopicConfirmBtn.addEventListener("click", () => {
+  const name = newTopicNameInput.value.trim();
+  const desc = newTopicDescInput.value.trim();
+  
+  if (!name) {
+    alert("Please enter a topic name.");
+    return;
+  }
+  
+  const mod = SYLLABUS.find(m => m.no === currentModuleId);
+  if (mod) {
+    mod.topics.push([name, desc || "No description provided."]);
+    saveSyllabus();
+    hideAddTopicModal();
+    renderDetail(currentModuleId);
+    updateGlobal();
+  }
+});
+
+// Delete PIN Modal Logic
+const deletePinModal = document.getElementById("deletePinModal");
+const deletePinConfirmBtn = document.getElementById("deletePinConfirm");
+const deletePinCancelBtn = document.getElementById("deletePinCancel");
+const deletePinInput = document.getElementById("deletePinInput");
+
+let topicToDelete = null;
+
+function showDeletePinModal(modNo, index) {
+  topicToDelete = { modNo, index };
+  deletePinInput.value = "";
+  deletePinModal.classList.add("active");
+  setTimeout(() => deletePinInput.focus(), 100);
+}
+
+function hideDeletePinModal() {
+  deletePinModal.classList.remove("active");
+  topicToDelete = null;
+}
+
+deletePinCancelBtn.addEventListener("click", hideDeletePinModal);
+
+deletePinConfirmBtn.addEventListener("click", () => {
+  if (deletePinInput.value === "0311") {
+    const { modNo, index } = topicToDelete;
+    const mod = SYLLABUS.find(m => m.no === modNo);
+    if (mod) {
+      mod.topics.splice(index, 1);
+      
+      // Shift progress indices
+      const prefix = "m" + modNo + "-t";
+      const newDone = {};
+      Object.keys(done).forEach(key => {
+        if (key.startsWith(prefix)) {
+          const tIdx = parseInt(key.slice(prefix.length));
+          if (tIdx < index) {
+            newDone[key] = done[key];
+          } else if (tIdx > index) {
+            newDone[prefix + (tIdx - 1)] = done[key];
+          }
+          // if tIdx === index, it's deleted
+        } else {
+          newDone[key] = done[key];
+        }
+      });
+      done = newDone;
+      
+      saveSyllabus();
+      saveProgress();
+      hideDeletePinModal();
+      renderDetail(modNo);
+      updateGlobal();
+    }
+  } else {
+    alert("Incorrect PIN. Topic not deleted.");
+    deletePinInput.value = "";
+    deletePinInput.focus();
+  }
+});
+
+function moduleStats(mod) {
+  const total = mod.topics.length;
+  let count = 0;
+  for (let i = 0; i < total; i++) {
+    const val = done[topicKey(mod.no, i)];
+    if (val && (val === true || val.done)) count++;
+  }
+  return { total, count, pct: total ? Math.round((count / total) * 100) : 0 };
+}
+
+function buildNav() {
+  navEl.innerHTML = SYLLABUS.map(mod => {
+    const s = moduleStats(mod);
+    return '<a class="nav-item" href="#module-' + mod.no + '" data-nav="' + mod.no + '">' +
+      '<div class="nav-title"><span class="nav-num">' + mod.no + '</span><span>' + esc(mod.title) + '</span></div>' +
+      '<div class="nav-meta">' + s.count + "/" + s.total + " done &middot; " + s.pct + '%</div>' +
+      '</a>';
+  }).join("");
+}
+
+let currentModuleId = null;
+
+function buildModules() {
+  if (currentModuleId === null) {
+    renderHome();
+  } else {
+    renderDetail(currentModuleId);
+  }
+}
+
+function renderHome() {
+  const cardsHtml = SYLLABUS.map(mod => {
+    const s = moduleStats(mod);
+    const soft = hexToRgba(mod.color, 0.1);
+    return `
+      <div class="module-card ${s.count === s.total ? 'is-complete' : ''}" 
+           data-card="${mod.no}" 
+           style="--card-color: ${mod.color}; --card-color-soft: ${soft};">
+        <div class="card-num">MODULE ${mod.no}</div>
+        <h3>${esc(mod.title)}</h3>
+        <div class="card-duration">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          ${esc(mod.duration)}
+        </div>
+        <div class="card-footer">
+          <div class="card-progress-info">
+            <span>Progress</span>
+            <span class="count">${s.pct}%</span>
+          </div>
+          <div class="card-progress-bar"><span style="width: ${s.pct}%"></span></div>
+          <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">${s.count} / ${s.total} topics completed</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  const infoHtml = `
+    <section class="info" id="info-roadmap">
+      <h3>Suggested 8-Month Learning Roadmap</h3>
+      <p class="sub">Month-wise focus and expected outcome.</p>
+      ${table(["Month", "Main focus", "Expected outcome"], ROADMAP)}
+    </section>
+    <section class="info" id="info-stack">
+      <h3>Recommended Technology Stack</h3>
+      <p class="sub">Technologies used across the course.</p>
+      ${table(["Layer", "Recommended technologies"], TECH_STACK)}
+    </section>
+    <section class="info" id="info-projects">
+      <h3>Recommended Project Checklist</h3>
+      <p class="sub">Core features each project should demonstrate.</p>
+      ${table(["Project", "Core features to demonstrate"], PROJECT_CHECKLIST)}
+    </section>
+    <section class="info" id="info-advice">
+      <h3>Important Learning Advice</h3>
+      <p class="sub">How to get the most out of this syllabus.</p>
+      <ul class="advice">${ADVICE.map(a => "<li>" + esc(a) + "</li>").join("")}</ul>
+    </section>
+  `;
+
+  mainEl.innerHTML = `
+    <div class="view-header">
+      <h2 style="margin:0; font-size:20px; font-weight:700;">Curriculum Overview</h2>
+    </div>
+    <div class="cards-grid">${cardsHtml}</div>
+    ${infoHtml}
+  `;
+}
+
+function renderDetail(no) {
+  const mod = SYLLABUS.find(m => m.no === no);
+  if (!mod) return renderHome();
+  
+  const s = moduleStats(mod);
+  const soft = hexToRgba(mod.color, 0.1);
+  const topicsHtml = mod.topics.map((topic, i) => {
+    const key = topicKey(mod.no, i);
+    const val = done[key];
+    const isDone = val && (val === true || val.done);
+    const dateStr = (val && val.date) ? val.date : "";
+    
+    return `
+      <tr class="topic-row ${isDone ? 'is-done' : ''}" data-topic="${key}" data-index="${i}">
+        <td>${i + 1}</td>
+        <td>${esc(topic[0])}</td>
+        <td>${esc(topic[1])}</td>
+        <td class="date-cell" style="font-size:12px; color:var(--muted);">${dateStr}</td>
+        <td class="status-cell"><input type="checkbox" id="${key}" ${isDone ? 'checked' : ''} /></td>
+        <td class="action-cell">
+          <button class="delete-topic-btn" title="Delete Topic">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  mainEl.innerHTML = `
+    <div class="view-header">
+      <button class="back-btn" id="backToHome">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Back to Overview
+      </button>
+    </div>
+    <section class="module is-detail ${s.count === s.total ? 'is-complete' : ''}" 
+             data-module="${mod.no}"
+             style="--mod-color: ${mod.color}; --mod-color-soft: ${soft};">
+      <div class="module-head">
+        <div class="num-badge">${mod.no}</div>
+        <div class="titles">
+          <h3>${esc(mod.title)}</h3>
+          <span class="chip">${esc(mod.duration)}</span>
+        </div>
+        <div class="module-progress">
+          <div class="bar ${s.count === s.total ? 'done' : ''}"><span style="width: ${s.pct}%"></span></div>
+          <span class="count">${s.count} / ${s.total}</span>
+        </div>
+      </div>
+      <table class="syllabus-table">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Topic / Point</th>
+            <th>Detailed syllabus / What to learn</th>
+            <th>Completed On</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>${topicsHtml}</tbody>
+      </table>
+      <div class="module-tools">
+        <button class="subtle" data-all="${mod.no}">Mark all complete</button>
+        <button class="subtle" id="addTopicBtn" style="color: var(--text); border: 1px solid var(--border); padding: 4px 12px; border-radius: 8px;">+ Add Topic</button>
+        <span class="spacer"></span>
+        <span class="hint" data-hint="${mod.no}">${s.count === s.total ? 'Module complete' : (s.total - s.count) + ' topic(s) remaining'}</span>
+      </div>
+    </section>
+  `;
+  window.scrollTo(0, 0);
+}
+
+function table(headers, rows) {
+  return '<table><thead><tr>' + headers.map(h => "<th>" + esc(h) + "</th>").join("") + '</tr></thead><tbody>' +
+    rows.map(r => "<tr>" + r.map((c, i) => "<td" + (i > 0 ? ' style="font-weight:400;white-space:normal"' : "") + ">" + esc(c) + "</td>").join("") + "</tr>").join("") +
+    '</tbody></table>';
+}
+
+function esc(str) {
+  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/* ------------------------------------------------------------------ */
+/* State updates                                                       */
+/* ------------------------------------------------------------------ */
+function updateModule(no) {
+  const mod = SYLLABUS.find(m => m.no === no);
+  if (!mod) return;
+  const s = moduleStats(mod);
+
+  // Update card if on home view
+  const card = mainEl.querySelector(`.module-card[data-card="${no}"]`);
+  if (card) {
+    card.querySelector(".card-progress-bar span").style.width = s.pct + "%";
+    card.querySelector(".count").textContent = s.count + " / " + s.total;
+    card.classList.toggle("is-complete", s.count === s.total);
+  }
+
+  // Update detail view if active
+  const section = mainEl.querySelector(`.module[data-module="${no}"]`);
+  if (section) {
+    section.querySelector(".bar > span").style.width = s.pct + "%";
+    section.querySelector(".bar").classList.toggle("done", s.count === s.total);
+    section.querySelector(".count").textContent = s.count + " / " + s.total;
+    section.classList.toggle("is-complete", s.count === s.total);
+    section.querySelector('[data-hint="' + no + '"]').textContent =
+      s.count === s.total ? "Module complete" : (s.total - s.count) + " topic(s) remaining";
+  }
+
+  const navItem = navEl.querySelector('[data-nav="' + no + '"]');
+  if (navItem) {
+    navItem.querySelector(".nav-meta").innerHTML = s.count + "/" + s.total + " done &middot; " + s.pct + "%";
+    navItem.classList.toggle("is-complete", s.count === s.total);
+  }
+}
+
+function updateGlobal() {
+  let total = 0, count = 0;
+  SYLLABUS.forEach(mod => {
+    const s = moduleStats(mod);
+    total += s.total;
+    count += s.count;
+  });
+  const pct = total ? Math.round((count / total) * 100) : 0;
+  const bar = document.getElementById("globalBar");
+  bar.querySelector("span").style.width = pct + "%";
+  bar.classList.toggle("done", count === total && total > 0);
+  document.getElementById("globalText").innerHTML =
+    "<b>" + pct + "%</b> &middot; " + count + " / " + total + " topics";
+}
+
+function refreshAll() {
+  SYLLABUS.forEach(mod => updateModule(mod.no));
+  updateGlobal();
+}
+
+/* ------------------------------------------------------------------ */
+/* Interactions                                                        */
+/* ------------------------------------------------------------------ */
+mainEl.addEventListener("click", event => {
+  const allBtn = event.target.closest("button[data-all]");
+  const addTopicBtn = event.target.closest("#addTopicBtn");
+  const delTopicBtn = event.target.closest(".delete-topic-btn");
+  const caret = event.target.closest("button[data-collapse]");
+  const row = event.target.closest("tr.topic-row");
+  const card = event.target.closest(".module-card");
+  const backBtn = event.target.closest("#backToHome");
+
+  if (backBtn) {
+    currentModuleId = null;
+    buildModules();
+    return;
+  }
+
+  if (card) {
+    currentModuleId = Number(card.dataset.card);
+    buildModules();
+    return;
+  }
+
+  if (allBtn) {
+    const no = Number(allBtn.dataset.all);
+    const mod = SYLLABUS.find(m => m.no === no);
+    const dateStr = new Date().toLocaleDateString();
+    
+    mod.topics.forEach((_, i) => {
+      const key = topicKey(no, i);
+      if (!done[key]) {
+        done[key] = { done: true, date: dateStr };
+        const row = mainEl.querySelector('tr[data-topic="' + key + '"]');
+        if (row) {
+          const box = row.querySelector("input");
+          box.checked = true;
+          row.classList.add("is-done");
+          row.querySelector(".date-cell").textContent = dateStr;
+        }
+      }
+    });
+    saveProgress();
+    updateModule(no);
+    updateGlobal();
+    return;
+  }
+
+  if (addTopicBtn) {
+    showAddTopicModal();
+    return;
+  }
+
+  if (delTopicBtn) {
+    const row = delTopicBtn.closest("tr.topic-row");
+    const modNo = Number(row.dataset.topic.slice(1, row.dataset.topic.indexOf("-")));
+    const index = Number(row.dataset.index);
+    showDeletePinModal(modNo, index);
+    return;
+  }
+
+  if (caret) {
+    const no = Number(caret.dataset.collapse);
+    const section = mainEl.querySelector('.module[data-module="' + no + '"]');
+    section.classList.toggle("collapsed");
+    caret.innerHTML = section.classList.contains("collapsed") ? "&#9654;" : "&#9660;";
+    return;
+  }
+
+  if (row && !event.target.matches('input[type="checkbox"]')) {
+    const box = row.querySelector("input");
+    box.checked = !box.checked;
+    box.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+});
+
+mainEl.addEventListener("change", async event => {
+  const box = event.target;
+  if (!box.matches('tr.topic-row input[type="checkbox"]')) return;
+  
+  const row = box.closest("tr.topic-row");
+  const key = row.dataset.topic;
+  const no = Number(key.slice(1, key.indexOf("-")));
+  const dateStr = new Date().toLocaleDateString();
+
+  if (box.checked) {
+    done[key] = { done: true, date: dateStr };
+    row.classList.add("is-done");
+    const dateCell = row.querySelector(".date-cell");
+    if (dateCell) dateCell.textContent = dateStr;
+  } else {
+    // Checkbox was unchecked
+    const confirmed = await showCustomConfirm();
+    if (confirmed) {
+      delete done[key];
+      row.classList.remove("is-done");
+      const dateCell = row.querySelector(".date-cell");
+      if (dateCell) dateCell.textContent = "";
+    } else {
+      // Revert the checkbox state
+      box.checked = true;
+      return;
+    }
+  }
+  
+  saveProgress();
+  updateModule(no);
+  updateGlobal();
+});
+
+/* ------------------------------------------------------------------ */
+/* Boot                                                                */
+/* ------------------------------------------------------------------ */
+buildModules();
+refreshAll();
+</script>
+</body>
+</html>
